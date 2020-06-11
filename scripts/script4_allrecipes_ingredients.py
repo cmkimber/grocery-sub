@@ -7,7 +7,9 @@ Created on Mon Jun  8 13:25:18 2020
 """
 
 import os
+import pickle
 
+os.chdir('/Users/chrki23/Documents/Insight_Project')
 path = os.getcwd()
 print(path)
 
@@ -64,7 +66,6 @@ ingredients = [[word_tokenize(entry) for entry in recipe] for recipe in ingredie
 ingredients_tagged = [[nltk.pos_tag(entry) for entry in recipe] for recipe in ingredients]
 
 # save out tagged list
-# import pickle
 # filehandler = open('/Users/chrki23/Documents/Insight_Project/data/cleaned/ingredient_tags.data', 'wb')
 # pickle.dump(ingredients_tagged, filehandler)
 
@@ -101,13 +102,16 @@ ingredients_filtered = [[[w for w in entry if not w in stop_words] for entry in 
 
 # Omit weights and measures
 
-units = ['ounce', 'ounces', 'cups', 'cup', 'teaspoon', 'tablespoon', 'tablespoons', 'teaspoons', 'c', 'g', 'v', 'tbsp', 'x', 'ml', 'lb', 'tbs', 'oz', 'pkg', 'large', 'small', 'tsp', 'inch', 'grams', 'quarts', 'lbs', 'can', 'cube', 'whole', 'or', 'pieces', 'piece', 'chopped', 'shredded', 'diced', 'fresh', 'crushed', 'tsp', 'package', 'kg', 'kilogram', 'gallon', 'degree', 'degrees', 'temperature', 'hot', 'warm', 'cold', 'boiling', 'lukewarm', 'f', 'c','slice', 'sliced', 'fresh', 'freshly', 'pound', 'pounds', 'thin', 'thinly', 'thick', 'thickly', 'coarsely', 'finely', 'jar', 'strip', 'strips', 'cut', 'peeled', 'wedge', 'bitesize', 'according', 'direction', 'optional', 'bite', 'size', 'half', 'pinch', 'dash', 'eg', 'frozen', 'thawed', 'recipe', 'fat', 'quart', 'quarts', 'pint', 'pints', 'splash', 'container', 'fried', 'cooked', 'uncooked', 'boiled', 'reduced', 'drained', 'water', 'one', 'washed', 'rinsed', 'pitted', 'head', 'tube', 'fluid', 'fl', 'preferably', 'bottle', 'diagonally', 'crosswise', 'lengthwise', 'torn', 'serving', 'bunch', 'halved', 'part', 'quartered', 'available', 'grocery', 'first', 'andor', 'substitution', 'bar']
+blacklist = ['ounce', 'ounces', 'cups', 'cup', 'teaspoon', 'tablespoon', 'tablespoons', 'teaspoons', 'c', 'g', 'v', 'tbsp', 'x', 'ml', 'lb', 'tbs', 'oz', 'pkg', 'large', 'small', 'tsp', 'inch', 'grams', 'quarts', 'lbs', 'can', 'cube', 'whole', 'or', 'pieces', 'piece', 'chopped', 'shredded', 'diced', 'fresh', 'crushed', 'tsp', 'package', 'kg', 'kilogram', 'gallon', 'degree', 'degrees', 'temperature', 'hot', 'warm', 'cold', 'boiling', 'lukewarm', 'f', 'c','slice', 'sliced', 'fresh', 'freshly', 'pound', 'pounds', 'thin', 'thinly', 'thick', 'thickly', 'coarsely', 'finely', 'jar', 'strip', 'strips', 'cut', 'peeled', 'wedge', 'bitesize', 'according', 'direction', 'optional', 'bite', 'size', 'half', 'pinch', 'dash', 'eg', 'frozen', 'thawed', 'recipe', 'fat', 'quart', 'quarts', 'pint', 'pints', 'splash', 'container', 'fried', 'cooked', 'uncooked', 'boiled', 'reduced', 'drained', 'water', 'one', 'washed', 'rinsed', 'pitted', 'head', 'tube', 'fluid', 'fl', 'preferably', 'bottle', 'diagonally', 'crosswise', 'lengthwise', 'torn', 'serving', 'bunch', 'halved', 'part', 'quartered', 'available', 'grocery', 'first', 'andor', 'substitution', 'bar']
 
-ingredients_clean = [[[w for w in entry if not w in units] for entry in recipe] for recipe in ingredients_filtered]
+ingredients_clean = [[[w for w in entry if not w in blacklist] for entry in recipe] for recipe in ingredients_filtered]
 
 # Omit brands
 
-ingredients_clean = [[[w for w in entry if not ['®', '™'] in w] for entry in recipe] for recipe in ingredients_clean]
+substrings = ['®', '™']
+ingredients_clean = [[[w for w in entry if not any(x in w for x in substrings)] for entry in recipe] for recipe in ingredients_clean]
+
+# ingredients_clean = [[[w for w in entry if not '®' in w] for entry in recipe] for recipe in ingredients_clean]
 
 # Remove empty lists
 
@@ -115,3 +119,4 @@ ingredients_clean = [[entry for entry in recipe if entry != [] ]for recipe in in
 
 filehandler = open(path + '/data/cleaned/ingredients_cleaned.data', 'wb')
 pickle.dump(ingredients_clean, filehandler)
+

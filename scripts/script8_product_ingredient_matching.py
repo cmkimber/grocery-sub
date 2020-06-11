@@ -7,13 +7,13 @@ Created on Wed Jun 10 21:17:19 2020
 """
 
 import os
+import pickle
 
+os.chdir('/Users/chrki23/Documents/Insight_Project')
 path = os.getcwd()
 print(path)
 
 ### Import grocery items and ingredients
-
-import pickle
 
 fileloader = open(path + '/data/cleaned/ingredients_used.data', 'rb')
 ingredients_used = pickle.load(fileloader)
@@ -30,27 +30,28 @@ import pandas as pd
 
 product_df = pd.DataFrame.from_dict(product_list)
 excluded_categories = ['Household & Cleaning', 'Health & Beauty', 'Pet Care', 'Baby', 'Pharmacy', 'Eco-Friendly Household Cleaning Products', 'Other Animals']
-product_filtered = product_df[~product_df.product_category.isin(excluded_categories)]
+product_filtered = product_df.copy()
+product_filtered = product_filtered[~product_filtered.product_category.isin(excluded_categories)]
 
 
 # Create edited product list to improve matching
 
-product_df['name_edit'] = product_df.name.str.lower()
+product_filtered['name_edit'] = product_filtered.name.str.lower()
 
 # Remove numbers
 
 import re
-product_df['name_edit'] = product_df['name_edit'].apply(lambda x: re.sub(r'\d+', '', x))
+product_filtered['name_edit'] = product_filtered['name_edit'].apply(lambda x: re.sub(r'\d+', '', x))
 
 # Filter punctuation
 
 import string
 table = str.maketrans('', '', string.punctuation)
-product_df['name_edit'] = product_df.name_edit.apply(lambda x: x.translate(table))
+product_filtered['name_edit'] = product_filtered.name_edit.apply(lambda x: x.translate(table))
 
 # Strip leading whitespace
 
-product_df['name_edit'] = product_df.name_edit.apply(lambda x: x.strip())
+product_filtered['name_edit'] = product_filtered.name_edit.apply(lambda x: x.strip())
 
 # # Tokenize and takg parts of speech with POS tagger
 
@@ -90,7 +91,7 @@ def fuzz_match (product_names, ingredient_list):
         score = process.extractOne(i, ingredient_list)
         fuzz_score.append(score)
         
-fuzz_match(product_df.name_edit, ingredient_list)
+fuzz_match(product_filtered.name_edit, ingredient_list)
 
 # Write out
 fileloader = open(path + '/data/cleaned/fuzzymatch_scores.data', 'wb')
@@ -100,7 +101,9 @@ fileloader.close()
 fuzz_df = pd.DataFrame.from_dict(fuzz_score)
 fuzz_df.columns = ['ingredient', 'fuzz_score']
 
-product_df = product_df.append(fuzz_df)
+product_filtered = product_filtered.append(fuzz_df)
+
+
 
 
         

@@ -7,7 +7,9 @@ Created on Tue Jun  9 17:42:25 2020
 """
 
 import os
+import pickle
 
+os.chdir('/Users/chrki23/Documents/Insight_Project')
 path = os.getcwd()
 print(path)
 
@@ -25,9 +27,9 @@ instructions = data.instructions.copy()
 
 import nltk
 from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
+# from nltk.corpus import stopwords
 
-stop_words = set(stopwords.words('english'))
+# stop_words = set(stopwords.words('english'))
 
 
 
@@ -45,9 +47,9 @@ instructions_processed = [[word_tokenize(entry) for entry in recipe] for recipe 
 instructions_tagged = [[nltk.pos_tag(entry) for entry in recipe] for recipe in instructions_processed]
 
 # Save out tagged instructions
-import pickle
-filehandler = open('/Users/chrki23/Documents/Insight_Project/data/cleaned/instruction_tags.data', 'wb')
-pickle.dump(instructions_tagged, filehandler)
+
+# filehandler = open('/Users/chrki23/Documents/Insight_Project/data/cleaned/instruction_tags.data', 'wb')
+# pickle.dump(instructions_tagged, filehandler)
 
 # Lemmatize
 
@@ -68,6 +70,7 @@ instructions_clean = [[[singularize_nouns(t) for t in tags] for tags in recipe] 
 
 filehandler = open('/Users/chrki23/Documents/Insight_Project/data/cleaned/instruction_clean.data', 'wb')
 pickle.dump(instructions_clean, filehandler)
+filehandler.close()
 
 ### Fit gensim phrasing model to ingredients
 
@@ -78,6 +81,10 @@ from gensim.models.phrases import Phrases, Phraser
 # flattened_stream = [item for sublist in sentence_stream for item in sublist]
 
 # bigrams = Phrases(flattened_stream, min_count = 5, threshold = 10, delimiter = b'_')
+
+fileloader = open(path + '/data/cleaned/instruction_clean.data', 'rb')
+ingredients_clean = pickle.load(fileloader)
+fileloader.close()
 
 ingredient_stream = [item for sublist in ingredients_clean for item in sublist]
 
@@ -99,5 +106,5 @@ instructions_tri = [[trigram[entry] for entry in recipe] for recipe in instructi
 
 filehandler = open(path + '/data/cleaned/instructions_ngrammed.data', 'wb')
 pickle.dump(instructions_tri, filehandler)
-
+filehandler.close()
 

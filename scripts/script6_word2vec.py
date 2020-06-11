@@ -7,13 +7,13 @@ Created on Tue Jun  9 23:33:22 2020
 """
 
 import os
+import pickle
 
+os.chdir('/Users/chrki23/Documents/Insight_Project')
 path = os.getcwd()
 print(path)
 
 ## Load ingredient and instruction data
-
-import pickle
 
 fileloader = open(path + '/data/cleaned/ingredients_cleaned.data', 'rb')
 ingredients_cleaned = pickle.load(fileloader)
@@ -24,26 +24,35 @@ instruction_ngram = pickle.load(fileloader)
 fileloader.close()
 
 
-### Fit word2vec model to n-gram processed instructions
+### Try word2vec models to n-gram processed instructions
 
 instruction_stream = [item for sublist in instruction_ngram for item in sublist]
 
 from gensim.models import Word2Vec
 
-model1 = Word2Vec(instruction_stream, min_count = 5, size = 100, workers = 3, window = 5, sg = 0)
+# model1 = Word2Vec(instruction_stream, min_count = 5, size = 100, workers = 3, window = 5, sg = 0)
 
-model2 = Word2Vec(instruction_stream, min_count = 5, size = 300, workers = 3, window = 5, sg = 0)
+# model2 = Word2Vec(instruction_stream, min_count = 5, size = 300, workers = 3, window = 5, sg = 0)
 
-# Currently the winner
-model3 = Word2Vec(instruction_stream, min_count = 5, size = 300, workers = 3, window = 5, sg = 1)
+# # Currently the winner
+# model3 = Word2Vec(instruction_stream, min_count = 5, size = 300, workers = 3, window = 5, sg = 1)
 
-# Currently a contender
-model4 = Word2Vec(instruction_stream, min_count = 5, size = 300, workers = 3, window = 20, sg = 0)
+# # Currently a contender
+# model4 = Word2Vec(instruction_stream, min_count = 5, size = 300, workers = 3, window = 20, sg = 0)
 
-model5 = Word2Vec(instruction_stream, min_count = 5, size = 300, workers = 3, window = 20, sg = 1)
+# model5 = Word2Vec(instruction_stream, min_count = 5, size = 300, workers = 3, window = 20, sg = 1)
+
+
+model = Word2Vec(instruction_stream, min_count = 5, size = 300, workers = 3, window = 5, sg = 1)
 
 
 # Save out vectors from word2vec model
+
+from gensim.test.utils import get_tmpfile
+from gensim.models import KeyedVectors
+
+fname = get_tmpfile(path + '/data/cleaned/final_vectors.kv')
+model.wv.save(fname)
 
 
 ### Work with the ingredients list format
@@ -65,3 +74,4 @@ ingredients_used = list(ingredients_set.intersection(set(instructions_flat)))
 
 fileloader = open(path + '/data/cleaned/ingredients_used.data', 'wb')
 pickle.dump(ingredients_used, fileloader)
+fileloader.close()
