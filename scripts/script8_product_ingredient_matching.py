@@ -93,7 +93,7 @@ def fuzz_match (product_names, ingredient_list):
         
 fuzz_match(product_filtered.name_edit, ingredient_list)
 
-# Write out
+# Write out matches
 fileloader = open(path + '/data/cleaned/fuzzymatch_scores.data', 'wb')
 pickle.dump(fuzz_score, fileloader)
 fileloader.close()
@@ -101,8 +101,14 @@ fileloader.close()
 fuzz_df = pd.DataFrame.from_dict(fuzz_score)
 fuzz_df.columns = ['ingredient', 'fuzz_score']
 
-product_filtered = product_filtered.append(fuzz_df)
+product_filtered = product_filtered.reset_index(drop = true)
+lookup_table = pd.concat([product_filtered, fuzz_df], axis = 1)
+lookup_table['ingredient'] = lookup_table['ingredient'].str.replace(' ', '_')
 
+# Write out lookup table
+fileloader = open(path + '/data/cleaned/lookup_table.data', 'wb')
+pickle.dump(lookup_table, fileloader)
+fileloader.close()
 
 
 
