@@ -48,12 +48,13 @@ model = Word2Vec(instruction_stream, min_count = 5, size = 300, workers = 3, win
 
 # Save out vectors from word2vec model
 
-from gensim.test.utils import get_tmpfile
-from gensim.models import KeyedVectors
+# from gensim.test.utils import get_tmpfile
+# from gensim.models import KeyedVectors
 
-fname = get_tmpfile(path + '/data/cleaned/final_vectors.kv')
-model.wv.save(fname)
+# fname = get_tmpfile(path + '/data/cleaned/final_vectors.kv')
+# model.wv.save(fname)
 
+model.wv.save(path + '/data/cleaned/final_vectors_2.kv')
 
 ### Work with the ingredients list format
 
