@@ -22,15 +22,15 @@ The pipeline works as follows:
 
 For the dashboard:
 
-Dash
+Dash,
 gensim.KeyedVectors
 
 For preparing the data and modelling:
 
-nltk
-gensim: both Phrases and Word2Vec
-Selenium
-Beautiful Soup
+nltk,
+gensim: both Phrases and Word2Vec,
+Selenium,
+Beautiful Soup,
 fuzzywuzzy
 
 ## Running the dashboard
