@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
+Process Allrecipes ingredient lists to ID ingredients
+
 Created on Mon Jun  8 13:25:18 2020
 
 @author: chrki23
@@ -23,10 +25,6 @@ data = data_no_sausage
 
 ingredients = data.ingredients.copy()
 instructions = data.instructions.copy()
-
-# ingredients_test= ingredients[:10]
-
-# ingredients_test = [[entry.lower() for entry in recipe] for recipe in ingredients_test]
 
 
 ### Ingredient processing with NLTK
@@ -111,7 +109,6 @@ ingredients_clean = [[[w for w in entry if not w in blacklist] for entry in reci
 substrings = ['®', '™']
 ingredients_clean = [[[w for w in entry if not any(x in w for x in substrings)] for entry in recipe] for recipe in ingredients_clean]
 
-# ingredients_clean = [[[w for w in entry if not '®' in w] for entry in recipe] for recipe in ingredients_clean]
 
 # Remove empty lists
 

@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
+Helper function to select similar ingredients from similar words
+
 Created on Wed Jun 10 20:37:21 2020
 
 @author: chrki23

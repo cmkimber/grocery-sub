@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
+Process the Allrecipes instructions text
+
 Created on Tue Jun  9 17:42:25 2020
 
 @author: chrki23
@@ -30,7 +32,6 @@ from nltk.tokenize import word_tokenize
 # from nltk.corpus import stopwords
 
 # stop_words = set(stopwords.words('english'))
-
 
 
 ### Process instructions
@@ -76,11 +77,6 @@ filehandler.close()
 
 from gensim.models.phrases import Phrases, Phraser 
 
-# sentence_stream = [[[token.lower() for token in word_tokenize(entry) if token not in stop_words and token.isalpha()] for entry in recipe] for recipe in instructions]
-
-# flattened_stream = [item for sublist in sentence_stream for item in sublist]
-
-# bigrams = Phrases(flattened_stream, min_count = 5, threshold = 10, delimiter = b'_')
 
 fileloader = open(path + '/data/cleaned/instruction_clean.data', 'rb')
 ingredients_clean = pickle.load(fileloader)

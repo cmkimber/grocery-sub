@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
+Match grocery e-commerce product titles to ingredients
+
 Created on Wed Jun 10 21:17:19 2020
 
 @author: chrki23
@@ -53,27 +55,6 @@ product_filtered['name_edit'] = product_filtered.name_edit.apply(lambda x: x.tra
 
 product_filtered['name_edit'] = product_filtered.name_edit.apply(lambda x: x.strip())
 
-# # Tokenize and takg parts of speech with POS tagger
-
-# import nltk
-# from nltk.tokenize import word_tokenize
-
-# product_df['name_edit'] = product_df.name_edit.apply(lambda x: word_tokenize(x))
-
-# product_df['name_edit'] = product_df.name_edit.apply(lambda x: nltk.pos_tag(x))
-
-
-# # Filter out POS eg. verbs except present participle eg. 'baking'
-
-# excluded_tags = ['VB', 'VBD', 'VBN', 'VBP', 'VBZ', 'CC']
-# def verb_remove (lst):
-#     for i in list:
-#         if i not in excluded_tags:
-#             return i[1]
-#         else:
-#             return ''
-
-# product_df['name_edit'] = product_df.name_edit.apply(lambda x: verb_remove(x))
 
 # Prepare ingredients list
 
@@ -101,7 +82,7 @@ fileloader.close()
 fuzz_df = pd.DataFrame.from_dict(fuzz_score)
 fuzz_df.columns = ['ingredient', 'fuzz_score']
 
-product_filtered = product_filtered.reset_index(drop = true)
+product_filtered = product_filtered.reset_index(drop = True)
 lookup_table = pd.concat([product_filtered, fuzz_df], axis = 1)
 lookup_table['ingredient'] = lookup_table['ingredient'].str.replace(' ', '_')
 
@@ -110,31 +91,3 @@ fileloader = open(path + '/data/cleaned/lookup_table.data', 'wb')
 pickle.dump(lookup_table, fileloader)
 fileloader.close()
 
-
-
-        
-# def fuzz_match2 (product_names, ingredient_list):
-#     for i in product_names:
-#         scores = dict()
-#         best_score = process.extractOne(i, ingredient_list)
-        
-#         scores['ingredient'] = best_score[0]
-#         scores['fuzz_score'] = best_score[1]
-        
-#         fuzz_score.append(scores)
-
-# import nltk
-
-# jacc_score = pd.DataFrame(columns = ['ingredient', 'score'])
-
-# def jacc_match (product_names, ingredient_list):
-#     for i in product_names[:5]:
-#         jd = pd.DataFrame(columns = ['ingredient', 'score'])
-#         for count, j in enumerate(ingredient_list):
-#             score = nltk.jaccard_distance(set(i), set(j))
-#             jd.loc[count] = [j] + list(score)
-#     min_score = jd[jd.score == jd.score.min()]
-#     print(min_score)
-#     jacc_score.append(min_score)
-    
-# test = jacc_match(product_df.name_edit, ingredients_used)

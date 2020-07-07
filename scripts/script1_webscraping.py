@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
+Scraping the Metro grocery e-commerce site
+
 Created on Sun Jun  7 22:35:51 2020
 
 @author: chrki23
@@ -13,32 +15,6 @@ import re
 webshop_domain = 'https://metro.ca/en/'
 path = 'online-grocery/search'
 url = (webshop_domain + path)
-
-# driver = webdriver.Chrome()
-# driver.get(url)
-# driver.find_element_by_css_selector("button[class = 'ipdetection--close p__close']").click()
-# page = driver.page_source
-# soup = BeautifulSoup(page, features = 'html.parser')
-# driver.close()
-
-# item_classes = "products-tile-list__tile"
-# item_list = soup.find_all('div', class_ = item_classes[0])
-
-
-
-    
-# first_item = item_list[7]
-    
-# #brand = first_item.find('span', class_ = 'pt-brand').text
-
-# name = first_item.find('div', class_ = 'pt-title').text
-# sale_unit = first_item.find('span', class_ = 'pt-weight').text
-
-# product_category = first_item.find('div', class_ = re.compile("^tile-product item-addToCart")).attrs['data-product-category']
-
-# image_link = first_item.find('picture', class_ = 'tile-product__top-section__visuals__img-product defaultable-picture').find('source').attrs['srcset'].split(',')[0]
-
-# print(name, sale_unit, product_category, image_link)
 
 
 def get_max_pagenum (soup):
