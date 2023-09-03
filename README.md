@@ -1,5 +1,9 @@
 # GrocerySub
 
+## Update: September 2023
+
+GrocerySub was built as an integral part of my time as an Insight Data Science Fellow in the now-defunct Toronto programme, during its final session in spring/summer 2020. It was built (from ideation through to functional public web app) in 4 weeks. I recently made small updates to allow it to run on a current-spec PythonAnywhere instance but otherwise it remains as it was at the end of the 4 week development cycle.
+
 ## What is GrocerySub?
 
 GrocerySub is a tool that leverages information on food ingredient use cases found in online recipes to improve the scope or quality of substitution suggestions during online shopping. GrocerySub is not designed to make a single substitution recommendation, or even to replace other types of substitution recommenders. Rather, it aims to broaden the scope of substitution suggestions by surfacing products that may fill the 'role' of a missing product when the customer is cooking. A dashboard to explore the recommendations GrocerySub can produce is found online at https://cmkimber.pythonanywhere.com/. The dashboard was built using Plotly Dash.
